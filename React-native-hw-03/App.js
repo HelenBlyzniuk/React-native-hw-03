@@ -10,12 +10,14 @@ export default function App() {
     'RobotoRegular': require("./screens/fonts/Roboto-Regular.ttf"),
     'RobotoMedium': require("./screens/fonts/Roboto-Medium.ttf"),
   });
+  const loginInfo=(info)=>{
+    console.debug(info)
+  }
   return (
     <View style={styles.container}>
-      
       <StatusBar style="auto" />
       {/* <RegistrationScreen/> */}
-      <LoginScreen/>
+      <LoginScreen logininfo={loginInfo}/>
     </View>
   );
 }

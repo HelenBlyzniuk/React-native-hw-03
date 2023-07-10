@@ -5,20 +5,36 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
-  KeyboardAvoidingView,TouchableWithoutFeedback
+  KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Alert
 } from "react-native";
 
 import { useState } from "react";
 
-export function LoginScreen() {
+export function LoginScreen({logininfo}) {
   const [isFocused, setIsFocused] = useState(false);
+  const [email,setEmail]=useState('');
+  const [password,setPassword]=useState('');
+  const handleOnPress=()=>{
+    setIsFocused(false);
+    Keyboard.dismiss();
+  }
+  const handleSubmit=()=>{
+    if(email===''||password===''){
+      Alert.alert('Заповніть всі поля!!!')
+    }
+   
+    logininfo({email,password});
+    setEmail('');
+    setPassword('');
+  }
+  
   return (
     <View>
       <ImageBackground
         style={styles.image}
         source={require("../Images/photoBG.png")}
       >
-        <TouchableWithoutFeedback onPress={()=>{setIsFocused(false)}}>
+        <TouchableWithoutFeedback onPress={handleOnPress}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
@@ -28,6 +44,9 @@ export function LoginScreen() {
             <TextInput
               style={styles.input}
               placeholder="Адреса електронної пошти"
+              value={email}
+              keyboardType='email-address'
+              onChangeText={(value)=>{setEmail(value)}}
               onFocus={() => {
                 setIsFocused(true);
               }}
@@ -35,12 +54,14 @@ export function LoginScreen() {
             <TextInput
               style={styles.input}
               placeholder="Пароль"
+              value={password}
+              onChangeText={(value)=>{setPassword(value)}}
               onFocus={() => {
                 setIsFocused(true);
               }}
             />
          <View style={{...styles.btnContainer, marginBottom:isFocused?0:143}}>
-            <TouchableOpacity style={styles.btn_sign}>
+            <TouchableOpacity style={styles.btn_sign} onPress={handleSubmit}>
               <Text style={styles.btn_sign_text}>Увійти</Text>
             </TouchableOpacity>
 
