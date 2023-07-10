@@ -5,29 +5,32 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
-  KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Alert
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
 } from "react-native";
 
 import { useState } from "react";
 
-export function LoginScreen({logininfo}) {
+export function LoginScreen({ logininfo }) {
   const [isFocused, setIsFocused] = useState(false);
-  const [email,setEmail]=useState('');
-  const [password,setPassword]=useState('');
-  const handleOnPress=()=>{
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleOnPress = () => {
     setIsFocused(false);
     Keyboard.dismiss();
-  }
-  const handleSubmit=()=>{
-    if(email===''||password===''){
-      Alert.alert('Заповніть всі поля!!!')
+  };
+  const handleSubmit = ({logininfo}) => {
+    if (email.trim() === "" || password.trim() === "") {
+      Alert.alert("Заповніть всі поля!!!");
     }
-   
-    logininfo({email,password});
-    setEmail('');
-    setPassword('');
-  }
-  
+
+    logininfo({ email, password });
+    setEmail("");
+    setPassword("");
+  };
+
   return (
     <View>
       <ImageBackground
@@ -35,40 +38,55 @@ export function LoginScreen({logininfo}) {
         source={require("../Images/photoBG.png")}
       >
         <TouchableWithoutFeedback onPress={handleOnPress}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <View style={{ ...styles.form,}}>
-            <Text style={styles.title}>Увійти</Text>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
+            <View style={{ ...styles.form }}>
+              <Text style={styles.title}>Увійти</Text>
 
-            <TextInput
-              style={styles.input}
-              placeholder="Адреса електронної пошти"
-              value={email}
-              keyboardType='email-address'
-              onChangeText={(value)=>{setEmail(value)}}
-              onFocus={() => {
-                setIsFocused(true);
-              }}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Пароль"
-              value={password}
-              onChangeText={(value)=>{setPassword(value)}}
-              onFocus={() => {
-                setIsFocused(true);
-              }}
-            />
-         <View style={{...styles.btnContainer, marginBottom:isFocused?0:143}}>
-            <TouchableOpacity style={styles.btn_sign} onPress={handleSubmit}>
-              <Text style={styles.btn_sign_text}>Увійти</Text>
-            </TouchableOpacity>
+              <TextInput
+                style={styles.input}
+                placeholder="Адреса електронної пошти"
+                value={email}
+                keyboardType="email-address"
+                onChangeText={(value) => {
+                  setEmail(value);
+                }}
+                onFocus={() => {
+                  setIsFocused(true);
+                }}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Пароль"
+                value={password}
+                secureTextEntry
+                onChangeText={(value) => {
+                  setPassword(value);
+                }}
+                onFocus={() => {
+                  setIsFocused(true);
+                }}
+              />
+              <View
+                style={{
+                  ...styles.btnContainer,
+                  marginBottom: isFocused ? 0 : 143,
+                }}
+              >
+                <TouchableOpacity
+                  style={styles.btn_sign}
+                  onPress={handleSubmit}
+                >
+                  <Text style={styles.btn_sign_text}>Увійти</Text>
+                </TouchableOpacity>
 
-            <Text style={styles.sentence}>Немає акаунту? Зареєструватися</Text>
-        </View>
-          </View>
-        </KeyboardAvoidingView>
+                <Text style={styles.sentence}>
+                  Немає акаунту? Зареєструватися
+                </Text>
+              </View>
+            </View>
+          </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
       </ImageBackground>
     </View>
@@ -76,7 +94,7 @@ export function LoginScreen({logininfo}) {
 }
 const styles = StyleSheet.create({
   title: {
-    fontFamily:'RobotoMedium',
+    fontFamily: "RobotoMedium",
     fontSize: 30,
     color: "#212121",
     marginTop: 32,
@@ -93,13 +111,13 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginBottom: 15,
     color: "#BDBDBD",
-    fontFamily:'RobotoRegular',
+    fontFamily: "RobotoRegular",
     fontStyle: "normal",
   },
-  btnContainer:{
-    marginBottom:143,
-    width:"100%",
-    alignItems:"center",
+  btnContainer: {
+    marginBottom: 143,
+    width: "100%",
+    alignItems: "center",
   },
   form: {
     padding: 16,
@@ -109,8 +127,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     alignItems: "center",
     justifyContent: "center",
-   
-    
   },
   btn_sign: {
     fontSize: 16,
@@ -123,14 +139,14 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 51,
     marginBottom: 15,
-    fontFamily:'RobotoRegular',
+    fontFamily: "RobotoRegular",
     fontStyle: "normal",
   },
   sentence: {
     color: "#1B4371",
     fontSize: 16,
     fontWeight: 400,
-    fontFamily:'RobotoRegular',
+    fontFamily: "RobotoRegular",
     fontStyle: "normal",
   },
   image: {
@@ -143,7 +159,7 @@ const styles = StyleSheet.create({
   btn_sign_text: {
     color: "#FFFFFF",
     fontSize: 16,
-    fontFamily:'RobotoRegular',
+    fontFamily: "RobotoRegular",
     fontStyle: "normal",
   },
 });

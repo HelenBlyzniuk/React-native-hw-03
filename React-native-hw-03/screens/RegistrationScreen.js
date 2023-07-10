@@ -7,14 +7,30 @@ import {
   ImageBackground,
   TouchableOpacity,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback, Dimensions
-  
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
 } from "react-native";
 
 import { useState } from "react";
 
-export function RegistrationScreen() {
+export function RegistrationScreen({registerInfo}) {
   const [isFocused, setIsFocused] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [login,setLogin]=useState('');
+  const [shouldShow,setShouldShow]=useState(false);
+
+  const handleSubmit=({registerinfo})=>{
+    if(email.trim()===''||password.trim()===''||login.trim()===''){
+      Alert.alert('Заповніть всі поля!!!');
+     
+    }
+    registerInfo({login,email,password});
+    setLogin('');
+    setEmail("");
+    setPassword("");
+  }
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -24,6 +40,7 @@ export function RegistrationScreen() {
         <TouchableWithoutFeedback
           onPress={() => {
             setIsFocused(false);
+            Keyboard.dismiss();
           }}
         >
           <KeyboardAvoidingView
@@ -33,8 +50,13 @@ export function RegistrationScreen() {
               <View
                 style={{ ...styles.form, paddingBottom: isFocused ? 12 : 45 }}
               >
-                <View style={{...styles.imageContainer,top:isFocused?"-5%":"-15%"}}>
-                 <View style={styles.iconBtn}>
+                <View
+                  style={{
+                    ...styles.imageContainer,
+                    top: isFocused ? "-5%" : "-15%",
+                  }}
+                >
+                  <View style={styles.iconBtn}>
                     <TouchableOpacity>
                       <Image
                         style={styles.icon}
@@ -42,39 +64,51 @@ export function RegistrationScreen() {
                       />
                     </TouchableOpacity>
                   </View>
-                  </View>
+                </View>
 
                 <Text style={styles.title}>Реєстрація</Text>
                 <TextInput
                   style={styles.input}
                   placeholder="Логін"
+                  value={login}
+                  textContentType='nickname'
+                  
                   onFocus={() => {
                     setIsFocused(true);
                   }}
+                  onChangeText={(value)=>{setLogin(value)}}
                 />
-               
+
                 <TextInput
                   style={styles.input}
                   placeholder="Адреса електронної пошти"
+                  keyboardType="email-address"
+                  value={email}
+                  textContentType='emailAddress'
                   onFocus={() => {
                     setIsFocused(true);
                   }}
+                  onChangeText={(value)=>{setEmail(value)}}
                 />
-                
+
                 <View>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Пароль"
-                  onFocus={() => {
-                    setIsFocused(true);
-                  }}
-                />
-                <TouchableOpacity style={styles.showPassword}>
-                  <Text style={styles.showPassword_text}>Показати</Text>
-                </TouchableOpacity>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Пароль"
+                    value={password}
+                    textContentType='password'
+                    secureTextEntry={shouldShow}
+                    onFocus={() => {
+                      setIsFocused(true);
+                    }}
+                    onChangeText={(value)=>{setPassword(value)}}
+                  />
+                  <TouchableOpacity style={styles.showPassword} onPress={()=>{setShouldShow(!shouldShow)}}>
+                    <Text style={styles.showPassword_text}>{shouldShow?'Показати':"Приховати"}</Text>
+                  </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.btn_sign}>
+                <TouchableOpacity style={styles.btn_sign} onPress={handleSubmit}>
                   <Text style={styles.btn_sign_text}>Зареєстуватися</Text>
                 </TouchableOpacity>
 
@@ -97,7 +131,7 @@ const styles = StyleSheet.create({
     color: "#212121",
     marginTop: 89,
     marginBottom: 30,
-    textAlign:"center",
+    textAlign: "center",
   },
   input: {
     height: 50,
@@ -110,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginBottom: 15,
     color: "#BDBDBD",
-    fontFamily:'RobotoRegular',
+    fontFamily: "RobotoRegular",
     fontStyle: "normal",
   },
   formWrapper: {
@@ -122,10 +156,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
     justifyContent: "center",
-    marginTop:"30%",
+    marginTop: "30%",
     paddingBottom: 43,
-   
-   
   },
   btn_sign: {
     fontSize: 16,
@@ -138,38 +170,37 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 51,
     marginBottom: 15,
-    fontFamily:'RobotoRegular',
+    fontFamily: "RobotoRegular",
     fontStyle: "normal",
   },
   sentence: {
-    textAlign:"center",
+    textAlign: "center",
     color: "#1B4371",
     fontSize: 16,
-    fontFamily:'RobotoRegular',
+    fontFamily: "RobotoRegular",
     fontStyle: "normal",
   },
-  showPassword_text:{
+  showPassword_text: {
     color: "#1B4371",
     fontSize: 16,
-    fontFamily:'RobotoRegular',
+    fontFamily: "RobotoRegular",
     fontStyle: "normal",
   },
-  showPassword:{
-    position:"absolute",
-    top:13,
-    right:13,
+  showPassword: {
+    position: "absolute",
+    top: 13,
+    right: 13,
   },
   image: {
     height: 812,
     width: 378,
     flex: 1,
     justifyContent: "flex-end",
-    
   },
   btn_sign_text: {
     color: "#FFFFFF",
     fontSize: 16,
-    fontFamily:'RobotoRegular',
+    fontFamily: "RobotoRegular",
     fontStyle: "normal",
   },
   icon: {
@@ -181,7 +212,7 @@ const styles = StyleSheet.create({
     left: "90%",
     top: "65%",
   },
-  imageContainer:{
+  imageContainer: {
     position: "absolute",
     left: "33%",
     width: 120,
@@ -189,8 +220,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     borderRadius: 16,
   },
-
 });
-
-
-
